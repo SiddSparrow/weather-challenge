@@ -13,7 +13,7 @@ class CurrentWeatherRepository implements CurrentWeatherRepositoryInterface
 
     public function getCurrentWeather(float $lat, float $lon, string $units = 'metric'): array
     {
-        return $this->client->get('/weather', [
+        return $this->client->get('/data/2.5/weather', [
             'lat' => $lat,
             'lon' => $lon,
             'units' => $units,

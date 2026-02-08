@@ -13,7 +13,7 @@ class ForecastRepository implements ForecastRepositoryInterface
 
     public function getForecast(float $lat, float $lon, string $units = 'metric'): array
     {
-        return $this->client->get('/forecast', [
+        return $this->client->get('/data/2.5/forecast', [
             'lat' => $lat,
             'lon' => $lon,
             'units' => $units,

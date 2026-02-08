@@ -13,7 +13,7 @@ class AirPollutionRepository implements AirPollutionRepositoryInterface
 
     public function getAirPollution(float $lat, float $lon): array
     {
-        return $this->client->get('/air_pollution', [
+        return $this->client->get('/data/2.5/air_pollution', [
             'lat' => $lat,
             'lon' => $lon,
         ]);
