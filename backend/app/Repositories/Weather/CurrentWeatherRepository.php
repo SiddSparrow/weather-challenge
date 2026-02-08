@@ -11,12 +11,13 @@ class CurrentWeatherRepository implements CurrentWeatherRepositoryInterface
         private readonly OpenWeatherMapClient $client,
     ) {}
 
-    public function getCurrentWeather(float $lat, float $lon, string $units = 'metric'): array
+    public function getCurrentWeather(float $lat, float $lon, string $units = 'metric', string $lang = 'en'): array
     {
         return $this->client->get('/data/2.5/weather', [
             'lat' => $lat,
             'lon' => $lon,
             'units' => $units,
+            'lang' => $lang,
         ]);
     }
 }

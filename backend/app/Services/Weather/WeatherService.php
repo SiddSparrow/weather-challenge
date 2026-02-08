@@ -16,9 +16,36 @@ class WeatherService
         private readonly GeoCodingRepositoryInterface $geoCodingRepository,
     ) {}
 
-    public function getCurrentWeather(float $lat, float $lon, string $units = 'metric'): array
+    public function getFullWeatherByCity(string $city, string $units = 'metric', string $lang = 'en'): array
     {
-        return $this->currentWeatherRepository->getCurrentWeather($lat, $lon, $units);
+        $locations = $this->geoCodingRepository->getCoordinates($city);
+
+        if (empty($locations)) {
+            return ['error' => 'city_not_found'];
+        }
+
+        $lat = $locations[0]['lat'];
+        $lon = $locations[0]['lon'];
+
+        $weather = $this->currentWeatherRepository->getCurrentWeather($lat, $lon, $units, $lang);
+        $airPollution = $this->airPollutionRepository->getAirPollution($lat, $lon);
+
+        return [
+            'location' => [
+                'name' => $locations[0]['name'],
+                'country' => $locations[0]['country'] ?? '',
+                'state' => $locations[0]['state'] ?? '',
+                'lat' => $lat,
+                'lon' => $lon,
+            ],
+            'weather' => $weather,
+            'air_pollution' => $airPollution,
+        ];
+    }
+
+    public function getCurrentWeather(float $lat, float $lon, string $units = 'metric', string $lang = 'en'): array
+    {
+        return $this->currentWeatherRepository->getCurrentWeather($lat, $lon, $units, $lang);
     }
 
     public function getForecast(float $lat, float $lon, string $units = 'metric'): array

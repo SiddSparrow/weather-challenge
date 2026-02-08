@@ -81,6 +81,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 const isLoading = ref(false)
@@ -98,11 +99,15 @@ async function handleRegister() {
   errorMessage.value = ''
 
   try {
-    // TODO: integrar com API de autenticação
-    console.log('Register:', form.email)
+    await axios.post('/api/register', { ...form })
     router.push({ name: 'login' })
-  } catch {
-    errorMessage.value = 'Erro ao criar conta. Tente novamente.'
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err) && err.response?.status === 422) {
+      const errors = err.response.data.errors
+      errorMessage.value = Object.values(errors).flat().join(' ')
+    } else {
+      errorMessage.value = 'Erro ao criar conta. Tente novamente.'
+    }
   } finally {
     isLoading.value = false
   }

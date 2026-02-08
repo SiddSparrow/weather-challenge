@@ -57,6 +57,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 const isLoading = ref(false)
@@ -72,11 +73,19 @@ async function handleLogin() {
   errorMessage.value = ''
 
   try {
-    // TODO: integrar com API de autenticação
-    console.log('Login:', form.email)
+    const response = await axios.post('/api/login', {
+      email: form.email,
+      password: form.password,
+    })
+
+    localStorage.setItem('token', response.data.token)
     router.push({ name: 'home' })
-  } catch {
-    errorMessage.value = 'E-mail ou senha inválidos.'
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err) && err.response?.status === 401) {
+      errorMessage.value = 'E-mail ou senha inválidos.'
+    } else {
+      errorMessage.value = 'Erro ao conectar. Tente novamente.'
+    }
   } finally {
     isLoading.value = false
   }
