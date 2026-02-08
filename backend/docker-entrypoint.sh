@@ -13,6 +13,7 @@ if [ -z "$(grep '^APP_KEY=base64:' .env 2>/dev/null)" ]; then
 fi
 
 # Fix storage permissions
+chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || true
 chmod -R 775 storage bootstrap/cache 2>/dev/null || true
 
 echo "Starting PHP-FPM..."
