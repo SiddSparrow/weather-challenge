@@ -1,76 +1,81 @@
 <template>
-  <div class="flex min-h-screen items-center justify-center bg-gray-100 px-4">
-    <div class="w-full max-w-sm space-y-6">
+  <div class="flex min-h-screen items-center justify-center bg-linear-to-br from-slate-900 via-blue-950 to-indigo-950 px-4">
+    <div class="w-full max-w-sm space-y-8">
       <div class="text-center">
-        <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">Weather Challenge</h1>
-        <p class="mt-2 text-sm text-gray-600">Crie sua conta</p>
+        <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm">
+          <svg class="h-8 w-8 text-blue-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+          </svg>
+        </div>
+        <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Weather Challenge</h1>
+        <p class="mt-2 text-sm text-white/50">Crie sua conta</p>
       </div>
 
-      <form @submit.prevent="handleRegister" class="space-y-4 rounded-lg bg-white p-6 shadow sm:p-8">
-        <div v-if="errorMessage" class="rounded-md bg-red-50 p-3 text-sm text-red-700">
+      <form @submit.prevent="handleRegister" class="space-y-5 rounded-2xl bg-white/10 p-6 shadow-xl shadow-black/10 backdrop-blur-xl border border-white/10 sm:p-8">
+        <div v-if="errorMessage" class="rounded-xl bg-red-500/20 border border-red-500/30 p-3 text-sm text-red-300">
           {{ errorMessage }}
         </div>
 
         <div>
-          <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
+          <label for="name" class="block text-sm font-medium text-white/70">Nome</label>
           <input
             id="name"
             v-model="form.name"
             type="text"
             required
             placeholder="Seu nome"
-            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            class="mt-1 block w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white shadow-sm placeholder:text-white/30 focus:border-blue-400/50 focus:outline-none focus:ring-1 focus:ring-blue-400/50"
           />
         </div>
 
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+          <label for="email" class="block text-sm font-medium text-white/70">E-mail</label>
           <input
             id="email"
             v-model="form.email"
             type="email"
             required
             placeholder="seu@email.com"
-            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            class="mt-1 block w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white shadow-sm placeholder:text-white/30 focus:border-blue-400/50 focus:outline-none focus:ring-1 focus:ring-blue-400/50"
           />
         </div>
 
         <div>
-          <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+          <label for="password" class="block text-sm font-medium text-white/70">Senha</label>
           <input
             id="password"
             v-model="form.password"
             type="password"
             required
             placeholder="••••••••"
-            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            class="mt-1 block w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white shadow-sm placeholder:text-white/30 focus:border-blue-400/50 focus:outline-none focus:ring-1 focus:ring-blue-400/50"
           />
         </div>
 
         <div>
-          <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar senha</label>
+          <label for="password_confirmation" class="block text-sm font-medium text-white/70">Confirmar senha</label>
           <input
             id="password_confirmation"
             v-model="form.password_confirmation"
             type="password"
             required
             placeholder="••••••••"
-            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            class="mt-1 block w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white shadow-sm placeholder:text-white/30 focus:border-blue-400/50 focus:outline-none focus:ring-1 focus:ring-blue-400/50"
           />
         </div>
 
         <button
           type="submit"
           :disabled="isLoading"
-          class="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+          class="w-full rounded-xl bg-linear-to-r from-blue-500 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50 disabled:hover:shadow-lg"
         >
           {{ isLoading ? 'Criando...' : 'Criar conta' }}
         </button>
       </form>
 
-      <p class="text-center text-sm text-gray-600">
+      <p class="text-center text-sm text-white/40">
         Já tem conta?
-        <router-link to="/login" class="font-semibold text-blue-600 hover:text-blue-500">
+        <router-link to="/login" class="font-semibold text-blue-400 hover:text-blue-300 transition-colors">
           Entrar
         </router-link>
       </p>

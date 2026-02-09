@@ -1,7 +1,7 @@
 <template>
-  <div class="rounded-md bg-gray-50 p-3">
-    <p class="text-xs font-medium text-gray-500">{{ label }}</p>
-    <p class="mt-1 text-sm font-semibold text-gray-900">{{ value }}</p>
+  <div class="rounded-xl bg-white/5 border border-white/10 p-3">
+    <p class="text-xs font-medium text-white/50">{{ label }}</p>
+    <p class="mt-1 text-sm font-semibold text-white">{{ value }}</p>
   </div>
 </template>
 

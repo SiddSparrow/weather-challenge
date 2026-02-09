@@ -1,7 +1,7 @@
 <template>
   <!-- Weather Details -->
-  <div class="rounded-lg bg-white p-4 shadow sm:p-6">
-    <h3 class="mb-4 text-lg font-semibold text-gray-800">{{ t('weather.title') }}</h3>
+  <div class="rounded-2xl bg-white/5 border border-white/10 p-4 backdrop-blur-xl sm:p-6">
+    <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-white/40">{{ t('weather.title') }}</h3>
     <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
       <WeatherCard :label="t('weather.temperature')" :value="`${data.weather.main.temp}${unitSymbol}`" />
       <WeatherCard :label="t('weather.feelsLike')" :value="`${data.weather.main.feels_like}${unitSymbol}`" />
@@ -23,13 +23,13 @@
   </div>
 
   <!-- Air Pollution Table -->
-  <div class="rounded-lg bg-white p-4 shadow sm:p-6">
-    <h3 class="mb-4 text-lg font-semibold text-gray-800">{{ t('airPollution.title') }}</h3>
+  <div class="rounded-2xl bg-white/5 border border-white/10 p-4 backdrop-blur-xl sm:p-6">
+    <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-white/40">{{ t('airPollution.title') }}</h3>
 
     <div v-if="data.air_pollution?.list?.length" class="overflow-x-auto">
       <!-- AQI Badge -->
       <div class="mb-4">
-        <span class="text-sm text-gray-600">{{ t('airPollution.aqi') }}:</span>
+        <span class="text-sm text-white/50">{{ t('airPollution.aqi') }}:</span>
         <span
           class="ml-2 inline-flex rounded-full px-3 py-1 text-sm font-semibold"
           :class="aqiBadgeClass"
@@ -39,26 +39,26 @@
       </div>
 
       <!-- Components Table -->
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
+      <table class="min-w-full">
+        <thead>
+          <tr class="border-b border-white/10">
             <th
               v-for="col in pollutionColumns"
               :key="col.key"
-              class="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+              class="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-white/40"
             >
               {{ col.label }}
             </th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200 bg-white">
+        <tbody>
           <tr>
             <td
               v-for="col in pollutionColumns"
               :key="col.key"
-              class="whitespace-nowrap px-3 py-3 text-sm text-gray-700"
+              class="whitespace-nowrap px-3 py-3 text-sm text-white/80"
             >
-              {{ data.air_pollution.list[0].components[col.key]?.toFixed(2) ?? '-' }} <span class="text-xs text-gray-400">μg/m³</span>
+              {{ data.air_pollution.list[0].components[col.key]?.toFixed(2) ?? '-' }} <span class="text-xs text-white/40">μg/m³</span>
             </td>
           </tr>
         </tbody>
@@ -89,11 +89,11 @@ const aqiBadgeClass = computed(() => {
   if (!props.data.air_pollution?.list?.length) return ''
   const aqi = props.data.air_pollution.list[0].main.aqi
   const classes: Record<number, string> = {
-    1: 'bg-green-100 text-green-800',
-    2: 'bg-yellow-100 text-yellow-800',
-    3: 'bg-orange-100 text-orange-800',
-    4: 'bg-red-100 text-red-800',
-    5: 'bg-purple-100 text-purple-800',
+    1: 'bg-green-500/20 text-green-300 border border-green-500/30',
+    2: 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30',
+    3: 'bg-orange-500/20 text-orange-300 border border-orange-500/30',
+    4: 'bg-red-500/20 text-red-300 border border-red-500/30',
+    5: 'bg-purple-500/20 text-purple-300 border border-purple-500/30',
   }
   return classes[aqi] ?? ''
 })

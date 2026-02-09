@@ -2,21 +2,21 @@
   <div class="space-y-4">
     <div v-for="(items, day) in groupedByDay" :key="day">
       <!-- Day Header -->
-      <h4 class="text-sm font-semibold text-gray-600 uppercase tracking-wide">{{ day }}</h4>
+      <h4 class="text-sm font-semibold uppercase tracking-wider text-white/40">{{ day }}</h4>
 
       <div class="space-y-2">
         <div
           v-for="item in items"
           :key="item.dt"
-          class="rounded-lg bg-white shadow overflow-hidden"
+          class="rounded-xl bg-white/5 border border-white/10 overflow-hidden backdrop-blur-sm"
         >
           <!-- Card Summary -->
           <button
             @click="toggle(item.dt)"
-            class="w-full px-4 py-3 flex items-center gap-3 text-left hover:bg-gray-50 transition-colors"
+            class="w-full px-4 py-3 flex items-center gap-3 text-left hover:bg-white/5 transition-colors"
           >
             <!-- Time -->
-            <span class="text-sm font-medium text-gray-500 w-12 shrink-0">
+            <span class="text-sm font-medium text-white/50 w-12 shrink-0">
               {{ formatTime(item.dt_txt) }}
             </span>
 
@@ -29,29 +29,29 @@
             />
 
             <!-- Temp Min / Max -->
-            <span class="text-sm text-gray-700 w-24 shrink-0">
+            <span class="text-sm text-white/80 w-24 shrink-0">
               {{ Math.round(item.main.temp_min) }}{{ unitSymbol }} / {{ Math.round(item.main.temp_max) }}{{ unitSymbol }}
             </span>
 
             <!-- Rain -->
-            <span v-if="item.rain?.['3h']" class="text-sm text-blue-600 w-16 shrink-0">
+            <span v-if="item.rain?.['3h']" class="text-sm text-blue-400 w-16 shrink-0">
               {{ item.rain['3h'] }} mm
             </span>
-            <span v-else-if="item.snow?.['3h']" class="text-sm text-blue-400 w-16 shrink-0">
+            <span v-else-if="item.snow?.['3h']" class="text-sm text-blue-300 w-16 shrink-0">
               {{ item.snow['3h'] }} mm
             </span>
-            <span v-else class="w-16 shrink-0">
+            <span v-else class="text-sm text-white/30 w-16 shrink-0">
               0.00 mm
             </span>
 
             <!-- Description (hidden on mobile) -->
-            <span class="hidden sm:block text-sm text-gray-500 capitalize flex-1 truncate">
+            <span class="hidden sm:block text-sm text-white/50 capitalize flex-1 truncate">
               {{ item.weather[0]?.description }}
             </span>
 
             <!-- Expand Icon -->
             <svg
-              class="h-5 w-5 text-gray-400 shrink-0 transition-transform"
+              class="h-5 w-5 text-white/30 shrink-0 transition-transform"
               :class="{ 'rotate-180': expanded.has(item.dt) }"
               fill="none" stroke="currentColor" viewBox="0 0 24 24"
             >
@@ -60,31 +60,31 @@
           </button>
 
           <!-- Expanded Details -->
-          <div v-if="expanded.has(item.dt)" class="border-t border-gray-100 px-4 py-3 bg-gray-50">
+          <div v-if="expanded.has(item.dt)" class="border-t border-white/10 px-4 py-3 bg-white/5">
             <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm sm:grid-cols-4">
               <div>
-                <span class="text-gray-500">{{ t('forecast.feelsLike') }}:</span>
-                <span class="ml-1 font-medium text-gray-800">{{ Math.round(item.main.feels_like) }}{{ unitSymbol }}</span>
+                <span class="text-white/40">{{ t('forecast.feelsLike') }}:</span>
+                <span class="ml-1 font-medium text-white/80">{{ Math.round(item.main.feels_like) }}{{ unitSymbol }}</span>
               </div>
               <div>
-                <span class="text-gray-500">{{ t('forecast.humidity') }}:</span>
-                <span class="ml-1 font-medium text-gray-800">{{ item.main.humidity }}%</span>
+                <span class="text-white/40">{{ t('forecast.humidity') }}:</span>
+                <span class="ml-1 font-medium text-white/80">{{ item.main.humidity }}%</span>
               </div>
               <div>
-                <span class="text-gray-500">{{ t('forecast.wind') }}:</span>
-                <span class="ml-1 font-medium text-gray-800">{{ item.wind.speed }} {{ units === 'imperial' ? 'mph' : 'm/s' }}</span>
+                <span class="text-white/40">{{ t('forecast.wind') }}:</span>
+                <span class="ml-1 font-medium text-white/80">{{ item.wind.speed }} {{ units === 'imperial' ? 'mph' : 'm/s' }}</span>
               </div>
               <div>
-                <span class="text-gray-500">{{ t('forecast.clouds') }}:</span>
-                <span class="ml-1 font-medium text-gray-800">{{ item.clouds.all }}%</span>
+                <span class="text-white/40">{{ t('forecast.clouds') }}:</span>
+                <span class="ml-1 font-medium text-white/80">{{ item.clouds.all }}%</span>
               </div>
               <div>
-                <span class="text-gray-500">{{ t('forecast.pop') }}:</span>
-                <span class="ml-1 font-medium text-gray-800">{{ Math.round(item.pop * 100) }}%</span>
+                <span class="text-white/40">{{ t('forecast.pop') }}:</span>
+                <span class="ml-1 font-medium text-white/80">{{ Math.round(item.pop * 100) }}%</span>
               </div>
               <div>
-                <span class="text-gray-500">{{ t('weather.pressure') }}:</span>
-                <span class="ml-1 font-medium text-gray-800">{{ item.main.pressure }} hPa</span>
+                <span class="text-white/40">{{ t('weather.pressure') }}:</span>
+                <span class="ml-1 font-medium text-white/80">{{ item.main.pressure }} hPa</span>
               </div>
             </div>
           </div>
