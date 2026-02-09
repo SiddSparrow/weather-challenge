@@ -63,6 +63,7 @@ export interface WeatherData {
     weather: Array<{
       main: string
       description: string
+      icon: string
     }>
     wind: {
       speed: number

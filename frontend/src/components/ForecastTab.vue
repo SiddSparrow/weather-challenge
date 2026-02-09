@@ -20,10 +20,13 @@
               {{ formatTime(item.dt_txt) }}
             </span>
 
-            <!-- Weather Icon + Main -->
-            <span class="text-sm font-semibold text-gray-800 w-20 shrink-0 truncate">
-              {{ item.weather[0]?.main }}
-            </span>
+            <!-- Weather Icon -->
+            <img
+              v-if="item.weather[0]?.icon"
+              :src="`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`"
+              :alt="item.weather[0]?.main"
+              class="h-8 w-8 shrink-0"
+            />
 
             <!-- Temp Min / Max -->
             <span class="text-sm text-gray-700 w-24 shrink-0">
@@ -37,7 +40,9 @@
             <span v-else-if="item.snow?.['3h']" class="text-sm text-blue-400 w-16 shrink-0">
               {{ item.snow['3h'] }} mm
             </span>
-            <span v-else class="w-16 shrink-0"></span>
+            <span v-else class="w-16 shrink-0">
+              0.00 mm
+            </span>
 
             <!-- Description (hidden on mobile) -->
             <span class="hidden sm:block text-sm text-gray-500 capitalize flex-1 truncate">
