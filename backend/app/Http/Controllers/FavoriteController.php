@@ -10,7 +10,7 @@ class FavoriteController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $exec_time = microtime(true);
+        //$exec_time = microtime(true);
         $favorites = $request->user()->favorites()->latest()->get();
         //Log::info('Favorites retrieved in ' . round(microtime(true) - $exec_time, 4) . ' seconds for user ID: ' . $request->user()->id);
         return response()->json($favorites); 

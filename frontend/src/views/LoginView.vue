@@ -8,7 +8,7 @@
           </svg>
         </div>
         <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Weather Challenge</h1>
-        <p class="mt-2 text-sm text-white/50">Entre com sua conta</p>
+        <p class="mt-2 text-sm text-white/50">Sign in to your account</p>
       </div>
 
       <form @submit.prevent="handleLogin" class="space-y-5 rounded-2xl bg-white/10 p-6 shadow-xl shadow-black/10 backdrop-blur-xl border border-white/10 sm:p-8">
@@ -17,19 +17,19 @@
         </div>
 
         <div>
-          <label for="email" class="block text-sm font-medium text-white/70">E-mail</label>
+          <label for="email" class="block text-sm font-medium text-white/70">Email</label>
           <input
             id="email"
             v-model="form.email"
             type="email"
             required
-            placeholder="seu@email.com"
+            placeholder="your@email.com"
             class="mt-1 block w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white shadow-sm placeholder:text-white/30 focus:border-blue-400/50 focus:outline-none focus:ring-1 focus:ring-blue-400/50"
           />
         </div>
 
         <div>
-          <label for="password" class="block text-sm font-medium text-white/70">Senha</label>
+          <label for="password" class="block text-sm font-medium text-white/70">Password</label>
           <input
             id="password"
             v-model="form.password"
@@ -45,14 +45,14 @@
           :disabled="isLoading"
           class="w-full rounded-xl bg-linear-to-r from-blue-500 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50 disabled:hover:shadow-lg"
         >
-          {{ isLoading ? 'Entrando...' : 'Entrar' }}
+          {{ isLoading ? 'Signing in...' : 'Sign in' }}
         </button>
       </form>
 
       <p class="text-center text-sm text-white/40">
-        Não tem conta?
+        Don't have an account?
         <router-link to="/register" class="font-semibold text-blue-400 hover:text-blue-300 transition-colors">
-          Criar conta
+          Create account
         </router-link>
       </p>
     </div>
@@ -87,9 +87,9 @@ async function handleLogin() {
     router.push({ name: 'home' })
   } catch (err: unknown) {
     if (axios.isAxiosError(err) && err.response?.status === 401) {
-      errorMessage.value = 'E-mail ou senha inválidos.'
+      errorMessage.value = 'Invalid email or password.'
     } else {
-      errorMessage.value = 'Erro ao conectar. Tente novamente.'
+      errorMessage.value = 'Connection error. Please try again.'
     }
   } finally {
     isLoading.value = false

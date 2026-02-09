@@ -8,7 +8,7 @@
           </svg>
         </div>
         <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Weather Challenge</h1>
-        <p class="mt-2 text-sm text-white/50">Crie sua conta</p>
+        <p class="mt-2 text-sm text-white/50">Create your account</p>
       </div>
 
       <form @submit.prevent="handleRegister" class="space-y-5 rounded-2xl bg-white/10 p-6 shadow-xl shadow-black/10 backdrop-blur-xl border border-white/10 sm:p-8">
@@ -17,31 +17,31 @@
         </div>
 
         <div>
-          <label for="name" class="block text-sm font-medium text-white/70">Nome</label>
+          <label for="name" class="block text-sm font-medium text-white/70">Name</label>
           <input
             id="name"
             v-model="form.name"
             type="text"
             required
-            placeholder="Seu nome"
+            placeholder="Your name"
             class="mt-1 block w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white shadow-sm placeholder:text-white/30 focus:border-blue-400/50 focus:outline-none focus:ring-1 focus:ring-blue-400/50"
           />
         </div>
 
         <div>
-          <label for="email" class="block text-sm font-medium text-white/70">E-mail</label>
+          <label for="email" class="block text-sm font-medium text-white/70">Email</label>
           <input
             id="email"
             v-model="form.email"
             type="email"
             required
-            placeholder="seu@email.com"
+            placeholder="your@email.com"
             class="mt-1 block w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white shadow-sm placeholder:text-white/30 focus:border-blue-400/50 focus:outline-none focus:ring-1 focus:ring-blue-400/50"
           />
         </div>
 
         <div>
-          <label for="password" class="block text-sm font-medium text-white/70">Senha</label>
+          <label for="password" class="block text-sm font-medium text-white/70">Password</label>
           <input
             id="password"
             v-model="form.password"
@@ -53,7 +53,7 @@
         </div>
 
         <div>
-          <label for="password_confirmation" class="block text-sm font-medium text-white/70">Confirmar senha</label>
+          <label for="password_confirmation" class="block text-sm font-medium text-white/70">Confirm password</label>
           <input
             id="password_confirmation"
             v-model="form.password_confirmation"
@@ -69,14 +69,14 @@
           :disabled="isLoading"
           class="w-full rounded-xl bg-linear-to-r from-blue-500 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50 disabled:hover:shadow-lg"
         >
-          {{ isLoading ? 'Criando...' : 'Criar conta' }}
+          {{ isLoading ? 'Creating...' : 'Create account' }}
         </button>
       </form>
 
       <p class="text-center text-sm text-white/40">
-        Já tem conta?
+        Already have an account?
         <router-link to="/login" class="font-semibold text-blue-400 hover:text-blue-300 transition-colors">
-          Entrar
+          Sign in
         </router-link>
       </p>
     </div>
@@ -111,7 +111,7 @@ async function handleRegister() {
       const errors = err.response.data.errors
       errorMessage.value = Object.values(errors).flat().join(' ')
     } else {
-      errorMessage.value = 'Erro ao criar conta. Tente novamente.'
+      errorMessage.value = 'Error creating account. Please try again.'
     }
   } finally {
     isLoading.value = false
