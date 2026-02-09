@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FavoriteController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
+        $exec_time = microtime(true);
         $favorites = $request->user()->favorites()->latest()->get();
-
-        return response()->json($favorites);
+        //Log::info('Favorites retrieved in ' . round(microtime(true) - $exec_time, 4) . ' seconds for user ID: ' . $request->user()->id);
+        return response()->json($favorites); 
     }
 
     public function store(Request $request): JsonResponse

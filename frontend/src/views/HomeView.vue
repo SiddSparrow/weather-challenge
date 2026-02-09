@@ -90,7 +90,11 @@
       <!-- Favorites -->
       <div class="rounded-lg bg-white p-4 shadow sm:p-6">
         <h3 class="mb-3 text-lg font-semibold text-gray-800">{{ t('favorites.title') }}</h3>
-        <p v-if="!favorites.length" class="text-sm text-gray-500">{{ t('favorites.empty') }}</p>
+        <div v-if="isFavoritesLoading" class="flex items-center gap-2">
+          <div class="h-5 w-5 animate-spin rounded-full border-2 border-blue-600 border-t-transparent"></div>
+          <span class="text-sm text-gray-500">{{ t('app.loading') }}</span>
+        </div>
+        <p v-else-if="!favorites.length" class="text-sm text-gray-500">{{ t('favorites.empty') }}</p>
         <div v-else class="flex flex-wrap gap-2">
           <div
             v-for="fav in favorites"
@@ -243,7 +247,7 @@ import WeatherCard from '../components/WeatherCard.vue'
 const router = useRouter()
 const { t, locale, isChangingLocale, setLocale } = useI18n()
 const { data, isLoading, error, searchWeather } = useWeather()
-const { favorites, loadFavorites, toggleFavorite, removeFavorite, isFavorite } = useFavorites()
+const { favorites, isLoading: isFavoritesLoading, loadFavorites, toggleFavorite, removeFavorite, isFavorite } = useFavorites()
 
 const city = ref('')
 const units = ref('metric')
