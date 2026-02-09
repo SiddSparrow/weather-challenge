@@ -6,9 +6,12 @@
         <h1 class="text-xl font-bold text-gray-900 sm:text-2xl">{{ t('app.title') }}</h1>
         <button
           @click="handleLogout"
-          class="text-sm text-gray-500 hover:text-gray-700"
+          class="text-gray-400 hover:text-gray-600"
+          title="Logout"
         >
-          Logout
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1" />
+          </svg>
         </button>
       </div>
     </header>
@@ -84,6 +87,36 @@
         </div>
       </div>
 
+      <!-- Favorites -->
+      <div class="rounded-lg bg-white p-4 shadow sm:p-6">
+        <h3 class="mb-3 text-lg font-semibold text-gray-800">{{ t('favorites.title') }}</h3>
+        <p v-if="!favorites.length" class="text-sm text-gray-500">{{ t('favorites.empty') }}</p>
+        <div v-else class="flex flex-wrap gap-2">
+          <div
+            v-for="fav in favorites"
+            :key="fav.id"
+            class="group flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1.5 text-sm text-blue-700"
+          >
+            <button
+              @click="searchFavorite(fav)"
+              class="hover:underline"
+            >
+              {{ fav.city_name }}
+              <span v-if="fav.country" class="text-blue-400">{{ fav.country }}</span>
+            </button>
+            <button
+              @click="removeFavorite(fav.id)"
+              class="ml-1 text-blue-300 hover:text-red-500"
+              :title="t('favorites.remove')"
+            >
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Loading -->
       <div v-if="isLoading" class="flex justify-center py-12">
         <div class="text-center">
@@ -96,17 +129,35 @@
       <template v-if="data && !isLoading">
         <!-- Location -->
         <div class="rounded-lg bg-blue-600 p-4 text-white shadow sm:p-6">
-          <h2 class="text-lg font-bold sm:text-xl">
-            {{ data.location.name }}
-            <span v-if="data.location.state" class="font-normal text-blue-200">, {{ data.location.state }}</span>
-            <span class="font-normal text-blue-200"> - {{ data.location.country }}</span>
-          </h2>
-          <p class="mt-1 text-4xl font-bold sm:text-5xl">
-            {{ Math.round(data.weather.main.temp) }}{{ unitSymbol }}
-          </p>
-          <p class="mt-1 capitalize text-blue-100">
-            {{ data.weather.weather[0]?.description }}
-          </p>
+          <div class="flex items-start justify-between">
+            <div>
+              <h2 class="text-lg font-bold sm:text-xl">
+                {{ data.location.name }}
+                <span v-if="data.location.state" class="font-normal text-blue-200">, {{ data.location.state }}</span>
+                <span class="font-normal text-blue-200"> - {{ data.location.country }}</span>
+              </h2>
+              <p class="mt-1 text-4xl font-bold sm:text-5xl">
+                {{ Math.round(data.weather.main.temp) }}{{ unitSymbol }}
+              </p>
+              <p class="mt-1 capitalize text-blue-100">
+                {{ data.weather.weather[0]?.description }}
+              </p>
+            </div>
+            <button
+              @click="handleToggleFavorite"
+              class="shrink-0 p-1 transition-colors"
+              :title="isFavorite(data.location.name) ? t('favorites.remove') : t('favorites.add')"
+            >
+              <!-- Filled star -->
+              <svg v-if="isFavorite(data.location.name)" class="h-7 w-7 text-yellow-300" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <!-- Outline star -->
+              <svg v-else class="h-7 w-7 text-blue-200 hover:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <!-- Weather Details -->
@@ -181,19 +232,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from '../i18n'
 import { useWeather } from '../composables/useWeather'
+import { useFavorites } from '../composables/useFavorites'
+import type { FavoriteItem } from '../composables/useFavorites'
 import WeatherCard from '../components/WeatherCard.vue'
 
 const router = useRouter()
 const { t, locale, isChangingLocale, setLocale } = useI18n()
 const { data, isLoading, error, searchWeather } = useWeather()
+const { favorites, loadFavorites, toggleFavorite, removeFavorite, isFavorite } = useFavorites()
 
 const city = ref('')
 const units = ref('metric')
 const selectedLocale = ref(locale.value)
+
+onMounted(() => {
+  loadFavorites()
+})
 
 const unitSymbol = computed(() => {
   const symbols: Record<string, string> = { metric: '°C', imperial: '°F', standard: 'K' }
@@ -242,6 +300,22 @@ function handleSearch() {
 function handleLogout() {
   localStorage.removeItem('token')
   router.push({ name: 'login' })
+}
+
+async function handleToggleFavorite() {
+  if (!data.value) return
+  await toggleFavorite({
+    name: data.value.location.name,
+    lat: data.value.location.lat,
+    lon: data.value.location.lon,
+    country: data.value.location.country,
+    state: data.value.location.state,
+  })
+}
+
+function searchFavorite(fav: FavoriteItem) {
+  city.value = fav.city_name
+  searchWeather(fav.city_name, units.value, selectedLocale.value)
 }
 
 watch(locale, (newLocale: string) => {

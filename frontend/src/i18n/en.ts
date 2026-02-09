@@ -59,6 +59,12 @@ export default {
     pm10: 'PM10',
     nh3: 'NH₃',
   },
+  favorites: {
+    title: 'Favorites',
+    add: 'Add to favorites',
+    remove: 'Remove from favorites',
+    empty: 'No favorites yet.',
+  },
   errors: {
     cityRequired: 'Please enter a city name.',
     cityNotFound: 'City not found.',
