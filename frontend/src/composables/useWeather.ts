@@ -1,6 +1,46 @@
 import { ref } from 'vue'
 import axios from 'axios'
 
+export interface ForecastItem {
+  dt: number
+  dt_txt: string
+  main: {
+    temp: number
+    feels_like: number
+    temp_min: number
+    temp_max: number
+    pressure: number
+    humidity: number
+    sea_level?: number
+    grnd_level?: number
+  }
+  weather: Array<{
+    id: number
+    main: string
+    description: string
+    icon: string
+  }>
+  clouds: { all: number }
+  wind: { speed: number; deg: number; gust?: number }
+  visibility: number
+  pop: number
+  rain?: { '3h'?: number }
+  snow?: { '3h'?: number }
+  sys: { pod: string }
+}
+
+export interface ForecastData {
+  list: ForecastItem[]
+  city: {
+    name: string
+    coord: { lat: number; lon: number }
+    country: string
+    timezone: number
+    sunrise: number
+    sunset: number
+  }
+}
+
 export interface WeatherData {
   location: {
     name: string
@@ -49,6 +89,7 @@ export interface WeatherData {
       components: Record<string, number>
     }>
   }
+  forecast: ForecastData
 }
 
 export function useWeather() {

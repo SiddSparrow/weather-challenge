@@ -34,10 +34,11 @@ class ForecastRepositoryTest extends TestCase
                 'lat' => -22.9,
                 'lon' => -43.1,
                 'units' => 'imperial',
+                'lang' => 'pt',
             ])
             ->andReturn($expected);
 
-        $result = $this->repository->getForecast(-22.9, -43.1, 'imperial');
+        $result = $this->repository->getForecast(-22.9, -43.1, 'imperial', 'pt');
 
         $this->assertEquals($expected, $result);
     }

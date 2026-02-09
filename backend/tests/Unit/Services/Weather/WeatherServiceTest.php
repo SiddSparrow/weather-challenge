@@ -40,6 +40,7 @@ class WeatherServiceTest extends TestCase
         $geoData = [['lat' => -22.9, 'lon' => -43.1, 'name' => 'Niterói', 'country' => 'BR', 'state' => 'RJ']];
         $weatherData = ['main' => ['temp' => 25]];
         $pollutionData = ['list' => [['main' => ['aqi' => 2]]]];
+        $forecastData = ['list' => [['main' => ['temp' => 22]]]];
 
         $this->geoCodingRepo->shouldReceive('getCoordinates')
             ->once()
@@ -56,6 +57,11 @@ class WeatherServiceTest extends TestCase
             ->with(-22.9, -43.1)
             ->andReturn($pollutionData);
 
+        $this->forecastRepo->shouldReceive('getForecast')
+            ->once()
+            ->with(-22.9, -43.1, 'metric', 'pt')
+            ->andReturn($forecastData);
+
         $result = $this->service->getFullWeatherByCity('Niterói', 'metric', 'pt');
 
         $this->assertEquals('Niterói', $result['location']['name']);
@@ -63,6 +69,7 @@ class WeatherServiceTest extends TestCase
         $this->assertEquals('RJ', $result['location']['state']);
         $this->assertEquals($weatherData, $result['weather']);
         $this->assertEquals($pollutionData, $result['air_pollution']);
+        $this->assertEquals($forecastData, $result['forecast']);
     }
 
     public function test_get_full_weather_by_city_returns_error_when_city_not_found(): void
@@ -97,7 +104,7 @@ class WeatherServiceTest extends TestCase
 
         $this->forecastRepo->shouldReceive('getForecast')
             ->once()
-            ->with(-22.9, -43.1, 'metric')
+            ->with(-22.9, -43.1, 'metric', 'en')
             ->andReturn($expected);
 
         $result = $this->service->getForecast(-22.9, -43.1, 'metric');

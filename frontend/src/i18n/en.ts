@@ -59,6 +59,17 @@ export default {
     pm10: 'PM10',
     nh3: 'NH₃',
   },
+  tabs: {
+    current: 'Current Weather',
+    forecast: '5-Day Forecast',
+  },
+  forecast: {
+    feelsLike: 'Feels like',
+    humidity: 'Humidity',
+    wind: 'Wind',
+    clouds: 'Clouds',
+    pop: 'Precipitation',
+  },
   favorites: {
     title: 'Favorites',
     add: 'Add to favorites',

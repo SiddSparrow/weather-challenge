@@ -59,6 +59,17 @@ export default {
     pm10: 'PM10',
     nh3: 'NH₃',
   },
+  tabs: {
+    current: 'Clima Actual',
+    forecast: 'Pronóstico 5 Días',
+  },
+  forecast: {
+    feelsLike: 'Sensación térmica',
+    humidity: 'Humedad',
+    wind: 'Viento',
+    clouds: 'Nubes',
+    pop: 'Precipitación',
+  },
   favorites: {
     title: 'Favoritos',
     add: 'Agregar a favoritos',

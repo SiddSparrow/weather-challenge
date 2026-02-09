@@ -29,6 +29,7 @@ class WeatherService
 
         $weather = $this->currentWeatherRepository->getCurrentWeather($lat, $lon, $units, $lang);
         $airPollution = $this->airPollutionRepository->getAirPollution($lat, $lon);
+        $forecast = $this->forecastRepository->getForecast($lat, $lon, $units, $lang);
 
         return [
             'location' => [
@@ -40,6 +41,7 @@ class WeatherService
             ],
             'weather' => $weather,
             'air_pollution' => $airPollution,
+            'forecast' => $forecast,
         ];
     }
 
@@ -48,9 +50,9 @@ class WeatherService
         return $this->currentWeatherRepository->getCurrentWeather($lat, $lon, $units, $lang);
     }
 
-    public function getForecast(float $lat, float $lon, string $units = 'metric'): array
+    public function getForecast(float $lat, float $lon, string $units = 'metric', string $lang = 'en'): array
     {
-        return $this->forecastRepository->getForecast($lat, $lon, $units);
+        return $this->forecastRepository->getForecast($lat, $lon, $units, $lang);
     }
 
     public function getAirPollution(float $lat, float $lon): array

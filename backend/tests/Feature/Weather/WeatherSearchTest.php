@@ -60,6 +60,7 @@ class WeatherSearchTest extends TestCase
             'location' => ['name' => 'Niterói', 'country' => 'BR', 'state' => 'RJ', 'lat' => -22.9, 'lon' => -43.1],
             'weather' => ['main' => ['temp' => 25]],
             'air_pollution' => ['list' => [['main' => ['aqi' => 2]]]],
+            'forecast' => ['list' => [], 'city' => ['name' => 'Niterói']],
         ];
 
         $weatherService = Mockery::mock(WeatherService::class);
@@ -75,7 +76,7 @@ class WeatherSearchTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonPath('location.name', 'Niterói')
-            ->assertJsonStructure(['location', 'weather', 'air_pollution']);
+            ->assertJsonStructure(['location', 'weather', 'air_pollution', 'forecast']);
     }
 
     public function test_weather_search_returns_404_when_city_not_found(): void
