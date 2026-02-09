@@ -210,6 +210,7 @@
           :units="units"
           :unit-symbol="unitSymbol"
           :t="tFn"
+          :today-forecast="todayForecast"
         />
 
         <ForecastTab
@@ -255,6 +256,13 @@ const unitSymbol = computed(() => {
 })
 
 const tFn = computed(() => (key: string) => t.value(key))
+
+const todayForecast = computed(() => {
+  if (!data.value?.forecast?.list) return []
+  const now = new Date()
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+  return data.value.forecast.list.filter((item) => item.dt_txt.startsWith(today))
+})
 
 async function handleLocaleChange() {
   await setLocale(selectedLocale.value as 'en' | 'es' | 'pt')

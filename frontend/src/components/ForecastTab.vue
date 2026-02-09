@@ -134,16 +134,40 @@ function formatDayLabel(dtTxt: string): string {
   })
 }
 
+function getToday(): string {
+  const now = new Date()
+  const y = now.getFullYear()
+  const m = String(now.getMonth() + 1).padStart(2, '0')
+  const d = String(now.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
 const groupedByDay = computed(() => {
+  const today = getToday()
+
+  // Collect unique future dates (excluding today), take only the first 3
+  const futureDates = new Set<string>()
+  for (const item of props.forecast.list) {
+    const datePart = item.dt_txt.split(' ')[0]
+    if (datePart > today) {
+      futureDates.add(datePart)
+    }
+    if (futureDates.size === 3) break
+  }
+
+  const allowedDates = futureDates
+
+  // Group items belonging to those 3 days
   const groups: Record<string, typeof props.forecast.list> = {}
   for (const item of props.forecast.list) {
     const datePart = item.dt_txt.split(' ')[0]
+    if (!allowedDates.has(datePart)) continue
     const label = formatDayLabel(item.dt_txt)
     const key = `${datePart}|${label}`
     if (!groups[key]) groups[key] = []
     groups[key].push(item)
   }
-  // Return with formatted labels as keys
+
   const result: Record<string, typeof props.forecast.list> = {}
   for (const [key, items] of Object.entries(groups)) {
     const label = key.split('|')[1]

@@ -61,7 +61,8 @@ export default {
   },
   tabs: {
     current: 'Clima Actual',
-    forecast: 'Pronóstico 5 Días',
+    forecast: 'Pronóstico 3 Días',
+    todayForecast: 'Pronóstico de Hoy',
   },
   forecast: {
     feelsLike: 'Sensación térmica',

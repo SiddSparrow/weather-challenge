@@ -22,6 +22,86 @@
     </div>
   </div>
 
+  <!-- Today's Forecast -->
+  <div v-if="todayItems.length" class="rounded-2xl bg-white/5 border border-white/10 p-4 backdrop-blur-xl sm:p-6">
+    <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-white/40">{{ t('tabs.todayForecast') }}</h3>
+    <div class="space-y-2">
+      <div
+        v-for="item in todayItems"
+        :key="item.dt"
+        class="rounded-xl bg-white/5 border border-white/10 overflow-hidden backdrop-blur-sm"
+      >
+        <!-- Card Summary -->
+        <button
+          @click="toggle(item.dt)"
+          class="w-full px-4 py-3 flex items-center gap-3 text-left hover:bg-white/5 transition-colors"
+        >
+          <span class="text-sm font-medium text-white/50 w-12 shrink-0">
+            {{ formatTime(item.dt_txt) }}
+          </span>
+          <img
+            v-if="item.weather[0]?.icon"
+            :src="`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`"
+            :alt="item.weather[0]?.main"
+            class="h-8 w-8 shrink-0"
+          />
+          <span class="text-sm text-white/80 w-24 shrink-0">
+            {{ Math.round(item.main.temp_min) }}{{ unitSymbol }} / {{ Math.round(item.main.temp_max) }}{{ unitSymbol }}
+          </span>
+          <span v-if="item.rain?.['3h']" class="text-sm text-blue-400 w-16 shrink-0">
+            {{ item.rain['3h'] }} mm
+          </span>
+          <span v-else-if="item.snow?.['3h']" class="text-sm text-blue-300 w-16 shrink-0">
+            {{ item.snow['3h'] }} mm
+          </span>
+          <span v-else class="text-sm text-white/30 w-16 shrink-0">
+            0.00 mm
+          </span>
+          <span class="hidden sm:block text-sm text-white/50 capitalize flex-1 truncate">
+            {{ item.weather[0]?.description }}
+          </span>
+          <svg
+            class="h-5 w-5 text-white/30 shrink-0 transition-transform"
+            :class="{ 'rotate-180': expanded.has(item.dt) }"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <!-- Expanded Details -->
+        <div v-if="expanded.has(item.dt)" class="border-t border-white/10 px-4 py-3 bg-white/5">
+          <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm sm:grid-cols-4">
+            <div>
+              <span class="text-white/40">{{ t('forecast.feelsLike') }}:</span>
+              <span class="ml-1 font-medium text-white/80">{{ Math.round(item.main.feels_like) }}{{ unitSymbol }}</span>
+            </div>
+            <div>
+              <span class="text-white/40">{{ t('forecast.humidity') }}:</span>
+              <span class="ml-1 font-medium text-white/80">{{ item.main.humidity }}%</span>
+            </div>
+            <div>
+              <span class="text-white/40">{{ t('forecast.wind') }}:</span>
+              <span class="ml-1 font-medium text-white/80">{{ item.wind.speed }} {{ units === 'imperial' ? 'mph' : 'm/s' }}</span>
+            </div>
+            <div>
+              <span class="text-white/40">{{ t('forecast.clouds') }}:</span>
+              <span class="ml-1 font-medium text-white/80">{{ item.clouds.all }}%</span>
+            </div>
+            <div>
+              <span class="text-white/40">{{ t('forecast.pop') }}:</span>
+              <span class="ml-1 font-medium text-white/80">{{ Math.round(item.pop * 100) }}%</span>
+            </div>
+            <div>
+              <span class="text-white/40">{{ t('weather.pressure') }}:</span>
+              <span class="ml-1 font-medium text-white/80">{{ item.main.pressure }} hPa</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Air Pollution Table -->
   <div class="rounded-2xl bg-white/5 border border-white/10 p-4 backdrop-blur-xl sm:p-6">
     <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-white/40">{{ t('airPollution.title') }}</h3>
@@ -68,8 +148,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { WeatherData } from '../composables/useWeather'
+import { computed, reactive } from 'vue'
+import type { WeatherData, ForecastItem } from '../composables/useWeather'
 import WeatherCard from './WeatherCard.vue'
 
 const props = defineProps<{
@@ -77,7 +157,25 @@ const props = defineProps<{
   units: string
   unitSymbol: string
   t: (key: string) => string
+  todayForecast: ForecastItem[]
 }>()
+
+const expanded = reactive(new Set<number>())
+
+function toggle(dt: number) {
+  if (expanded.has(dt)) {
+    expanded.delete(dt)
+  } else {
+    expanded.add(dt)
+  }
+}
+
+function formatTime(dtTxt: string): string {
+  const timePart = dtTxt.split(' ')[1]
+  return timePart?.substring(0, 5) ?? ''
+}
+
+const todayItems = computed(() => props.todayForecast ?? [])
 
 const aqiLabel = computed(() => {
   if (!props.data.air_pollution?.list?.length) return ''

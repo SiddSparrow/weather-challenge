@@ -61,7 +61,8 @@ export default {
   },
   tabs: {
     current: 'Current Weather',
-    forecast: '5-Day Forecast',
+    forecast: '3-Day Forecast',
+    todayForecast: 'Today\'s Forecast',
   },
   forecast: {
     feelsLike: 'Feels like',
