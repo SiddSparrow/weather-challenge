@@ -5,9 +5,9 @@ A full-stack weather application built with **Laravel 12** and **Vue.js 3**, fea
 ## Tech Stack
 
 | Layer          | Technology                                      |
-|----------------|------------------------------------------------|
-| Backend        | PHP 8.2, Laravel 12, Laravel Sanctum           |
-| Frontend       | Vue 3, TypeScript 5.7, Tailwind CSS 4, Vite 6  |
+|----------------|-------------------------------------------------|
+| Backend        | PHP 8.2, Laravel 12, Laravel Sanctum            |
+| Frontend       | Vue 3, TypeScript 5.7, Tailwind CSS 4, Vite 6   |
 | Database       | PostgreSQL 16                                   |
 | Cache/Session  | Redis 7                                         |
 | Infrastructure | Docker, Docker Compose, Nginx                   |
@@ -28,15 +28,47 @@ A full-stack weather application built with **Laravel 12** and **Vue.js 3**, fea
 
 ## Architecture
 
+### Infrastructure Overview
+
+```
+                                          ┌─────────────────────────┐
+                                          │   OpenWeatherMap API    │
+                                          └────────────▲────────────┘
+                                                       │
+                                                       │ HTTP
+                                                       │
+┌──────────┐       ┌──────────────┐       ┌────────────┴────────────┐       ┌──────────────┐
+│          │ :5173 │              │       │                         │       │              │
+│   User   ├──────►│   Frontend   │       │      Laravel API        │       │  PostgreSQL  │
+│ (Browser)│◄──────┤  Vue 3 + TS  │       │                         |       │     :5432    │
+│          │       │    Vite      │       │                         ├──────►│              │
+└──────────┘       │   :5173      │       │      Controllers        │       │  Users       │
+                   └──────┬───────┘       │           │             |       |  Favorites   |
+                          |               |           ▼             │◄──────┤              │
+                          │               │        Services         │       │              │
+                          │  /api/*       │           │             |       └──────────────┘
+                          |               |           ▼             │       
+                          ▼               │      Repositories       │
+                   ┌──────────────┐       │           │             |
+                   |              |       |           ▼             │       ┌──────────────┐
+                   │              │       │      Cache Layer ──────────────►│              │
+                   │    Nginx     ├──────►│                         │◄──────┤    Redis     │
+                   │    :8000     │       │     Auth (Sanctum)      │       │    :6379     │
+                   │              │◄──────┤     Rate Limiting       │       │              │
+                   └──────────────┘       │     Validation          │       │  Cache       │
+                                          │                         │       │  Sessions    │
+                                          └─────────────────────────┘       └──────────────┘
+```
+
 ### Backend - Repository + Service Pattern
 
 ```
 Controller (HTTP layer)
-    |
+    │
 Service (orchestration)
-    |
+    │
 Repository (data access + caching)
-    |
+    │
 OpenWeatherMap API
 ```
 
