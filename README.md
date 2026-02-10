@@ -1,3 +1,7 @@
+Video: https://youtu.be/WhCysTFcDa4<br>
+LinkedIn: www.linkedin.com/in/fabioduqueestrada
+
+
 # Weather Challenge
 
 A full-stack weather application built with **Laravel 12** and **Vue.js 3**, featuring real-time weather data, 3-day forecasts, air quality monitoring, and multi-language support.
